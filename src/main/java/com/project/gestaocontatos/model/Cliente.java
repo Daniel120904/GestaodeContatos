@@ -3,6 +3,7 @@ package com.project.gestaocontatos.model;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.http.converter.json.GsonBuilderUtils;
 
 import java.time.LocalDate;
@@ -19,9 +20,11 @@ public class Cliente {
     private Long id;
 
     @Column(nullable = false, length = 100)
+    @NotEmpty(message = "O nome é obrigatório")
     private String nome;
 
     @Column(nullable = false, unique = true, length = 14)
+    @NotEmpty(message = "O CPF é obrigatório")
     private String cpf;
 
     @Column(nullable = false)
