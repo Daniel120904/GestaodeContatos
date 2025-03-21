@@ -195,3 +195,56 @@ button[type="submit"]:hover {
   cursor: pointer;
   margin-top: 10px;
 }
+
+.editar-cliente {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.campo {
+  margin-bottom: 15px;
+}
+.campo label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.campo input, select {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+}
+.contatos {
+  margin-top: 20px;
+}
+.contato-item {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+.contato-item label {
+  font-weight: bold;
+  margin-top: 5px;
+}
+.btn-adicionar, .btn-remover {
+  margin-top: 10px;
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+.btn-adicionar {
+  background-color: #4CAF50;
+  color: white;
+}
+.btn-remover {
+  background-color: #e74c3c;
+  color: white;
+}

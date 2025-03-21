@@ -1,6 +1,7 @@
 package com.project.gestaocontatos.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -34,9 +35,10 @@ public class Cliente {
     @Column(length = 255)
     private String endereco;
 
-    @JsonIgnore // Ignora a lista de contatos na serialização
+    @JsonManagedReference
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Contato> contatos = new ArrayList<>();
+
 
     public void adicionarContato(Contato contato) {
         contato.setCliente(this); // Associa o contato ao cliente
