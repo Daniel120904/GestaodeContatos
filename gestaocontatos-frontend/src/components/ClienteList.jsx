@@ -65,9 +65,6 @@ export const ClienteList = () => {
                                         <button onClick={() => navigate(`/editar/${cliente.id}`)}>
                                             <FaEdit/>
                                         </button>
-                                        <button onClick={() => handleExcluir(cliente.id)}>
-                                            <FaTrash />
-                                        </button>
                                     </div>
                                 </div>
                             ))}

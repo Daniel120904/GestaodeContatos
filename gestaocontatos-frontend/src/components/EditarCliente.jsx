@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getClienteById, updateCliente } from '../services/api';
+import { getClienteById, updateCliente, deleteCliente } from '../services/api';
 
 export default function EditarCliente() {
     const { id } = useParams();
@@ -63,6 +63,19 @@ export default function EditarCliente() {
         }
     };
 
+    const handleDelete = async () => {
+        const confirmacao = window.confirm("Tem certeza que deseja excluir este cliente? Essa ação não pode ser desfeita.");
+        if (confirmacao) {
+            try {
+                await deleteCliente(id);
+                alert("Cliente excluído com sucesso!");
+                navigate('/');
+            } catch (error) {
+                setErro('Erro ao excluir cliente');
+            }
+        }
+    };
+
     return (
         <div className="editar-cliente">
             <h2>Editar Cliente</h2>
@@ -121,6 +134,11 @@ export default function EditarCliente() {
 
                 <button type="submit">Salvar Alterações</button>
             </form>
+
+            {/* Botão de exclusão no final */}
+            <button type="button" onClick={handleDelete} className="btn-excluir">
+                Excluir Cliente
+            </button>
         </div>
     );
 }

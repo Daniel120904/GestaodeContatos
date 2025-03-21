@@ -32,7 +32,7 @@ export const createCliente = async (cliente) => {
 // DELETE: Excluir cliente
 export const deleteCliente = async (id) => {
     try {
-        await api.delete(`/${id}`);
+        await api.delete(`/clientes/${id}`);
     } catch (error) {
         console.error('Erro ao excluir cliente:', error);
         throw error;

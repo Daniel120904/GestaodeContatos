@@ -62,5 +62,11 @@ public class ClienteService {
         return clienteRepository.findById(id);
     }
 
+    @Transactional
+    public void excluirCliente(Long id) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+        clienteRepository.delete(cliente);
+    }
 
 }
