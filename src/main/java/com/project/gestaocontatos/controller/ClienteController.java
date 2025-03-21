@@ -23,4 +23,36 @@ public class ClienteController {
         List<Cliente> clientes = clienteService.listarTodos();
         return ResponseEntity.ok(clientes);
     }
+
+    @PostMapping
+    public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente cliente) {
+        try {
+            Cliente clienteSalvo = clienteService.salvarCliente(cliente);
+            return ResponseEntity.status(HttpStatus.CREATED).body(clienteSalvo);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Cliente> atualizarCliente(
+            @PathVariable Long id,
+            @RequestBody Cliente clienteAtualizado
+    ) {
+        try {
+            Cliente cliente = clienteService.atualizarCliente(id, clienteAtualizado);
+            return ResponseEntity.ok(cliente);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Cliente> buscarClientePorId(@PathVariable Long id) {
+        return clienteService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
 }

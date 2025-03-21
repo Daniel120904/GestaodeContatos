@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { getClientes, deleteCliente } from '../services/api';
 import { FaTrash, FaEdit } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const ClienteList = () => {
+    const navigate = useNavigate(); // Definindo navigate corretamente
     const [clientes, setClientes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -59,8 +62,8 @@ export const ClienteList = () => {
                                         <p><strong>Endereço:</strong> {cliente.endereco}</p>
                                     </div>
                                     <div className="cliente-acoes">
-                                        <button onClick={() => {/* Implementar edição */}}>
-                                            <FaEdit />
+                                        <button onClick={() => navigate(`/editar/${cliente.id}`)}>
+                                            <FaEdit/>
                                         </button>
                                         <button onClick={() => handleExcluir(cliente.id)}>
                                             <FaTrash />
