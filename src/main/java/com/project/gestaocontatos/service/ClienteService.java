@@ -7,11 +7,18 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    public List<Cliente> listarTodos() {
+        System.out.println("Buscando todos os clientes...");
+        return clienteRepository.findAll(); // Usa o metodo padrão do JpaRepository
+    }
 
     public Cliente salvarCliente(Cliente cliente) {
         // Valida CPF único

@@ -14,4 +14,13 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173") // Permite requisições do frontend
 public class ClienteController {
 
+    @Autowired
+    private ClienteService clienteService;
+
+    @GetMapping
+    public ResponseEntity<List<Cliente>> listarClientes() {
+        System.out.println("Endpoint /clientes chamado"); // Adicione este log
+        List<Cliente> clientes = clienteService.listarTodos();
+        return ResponseEntity.ok(clientes);
+    }
 }

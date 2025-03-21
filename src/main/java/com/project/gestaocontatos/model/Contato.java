@@ -1,5 +1,6 @@
 package com.project.gestaocontatos.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ public class Contato {
     @Column(length = 255)
     private String observacao;
 
+    @JsonBackReference // Evita loop infinito
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
