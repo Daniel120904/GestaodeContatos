@@ -1,20 +1,25 @@
 import { useEffect, useState } from 'react';
-import { getClientes, deleteCliente } from '../services/api';
-import { FaTrash, FaEdit } from 'react-icons/fa';
+import { getClientes } from '../services/api';
+import { FaEdit } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 
 export const ClienteList = () => {
-    const navigate = useNavigate(); // Definindo navigate corretamente
+    const navigate = useNavigate();
     const [clientes, setClientes] = useState([]);
+    const [clientesFiltrados, setClientesFiltrados] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [termoBusca, setTermoBusca] = useState('');
 
-    // Função para carregar clientes
+    useEffect(() => {
+        carregarClientes();
+    }, []);
+
     const carregarClientes = async () => {
         try {
             const data = await getClientes();
             setClientes(data);
+            setClientesFiltrados(data); // Inicialmente, todos os clientes são exibidos
             setError(null);
         } catch (err) {
             setError('Erro ao carregar clientes. Verifique o servidor.');
@@ -24,18 +29,22 @@ export const ClienteList = () => {
         }
     };
 
-    // Executa ao carregar o componente
-    useEffect(() => {
-        carregarClientes();
-    }, []);
+    // Função para remover pontos e traços do CPF
+    const limparCPF = (cpf) => cpf.replace(/\D/g, '');
 
-    // Excluir cliente
-    const handleExcluir = async (id) => {
-        try {
-            await deleteCliente(id);
-            await carregarClientes(); // Recarrega a lista após exclusão
-        } catch (err) {
-            console.error('Erro ao excluir:', err);
+    // Função para filtrar os clientes conforme a busca
+    const handleBusca = (e) => {
+        const termo = e.target.value.toLowerCase().trim();
+        setTermoBusca(termo);
+
+        if (termo === '') {
+            setClientesFiltrados(clientes);
+        } else {
+            const filtrados = clientes.filter((cliente) =>
+                cliente.nome.toLowerCase().includes(termo) ||
+                limparCPF(cliente.cpf).includes(termo) // Busca CPF sem pontuação
+            );
+            setClientesFiltrados(filtrados);
         }
     };
 
@@ -43,17 +52,24 @@ export const ClienteList = () => {
         <div className="clientes-container">
             <h2>Clientes Cadastrados</h2>
 
-            {loading && <div>Carregando...</div>}
+            <input
+                type="text"
+                placeholder="Buscar por Nome ou CPF"
+                value={termoBusca}
+                onChange={handleBusca}
+                className="barra-pesquisa"
+            />
 
+            {loading && <div>Carregando...</div>}
             {error && <div className="error-message">{error}</div>}
 
             {!loading && !error && (
                 <>
-                    {clientes.length === 0 ? (
-                        <p>Nenhum cliente cadastrado.</p>
+                    {clientesFiltrados.length === 0 ? (
+                        <p>Nenhum cliente encontrado.</p>
                     ) : (
                         <div className="clientes-lista">
-                            {clientes.map((cliente) => (
+                            {clientesFiltrados.map((cliente) => (
                                 <div key={cliente.id} className="cliente-item">
                                     <div className="cliente-detalhes">
                                         <h3>{cliente.nome}</h3>

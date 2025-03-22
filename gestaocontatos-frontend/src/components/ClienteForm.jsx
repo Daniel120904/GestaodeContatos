@@ -11,12 +11,45 @@ export const ClienteForm = ({ onClienteAdicionado }) => {
 
     const [erro, setErro] = useState('');
 
+    // Função para formatar CPF conforme o usuário digita
+    const formatarCPF = (valor) => {
+        return valor
+            .replace(/\D/g, '') // Remove tudo que não for número
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+            .slice(0, 14); // Limita a 14 caracteres
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        // Aplica formatação ao CPF
+        const novoValor = name === 'cpf' ? formatarCPF(value) : value;
+
+        setCliente({ ...cliente, [name]: novoValor });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErro('');
 
+        const dataAtual = new Date();
+        const dataNascimento = new Date(cliente.dataNascimento);
+        const dataMinima = new Date();
+        dataMinima.setFullYear(dataAtual.getFullYear() - 150); // Define o limite mínimo
+
+        // Validações apenas no momento do envio
+        if (dataNascimento > dataAtual) {
+            setErro("A data de nascimento não pode ser no futuro.");
+            return;
+        } else if (dataNascimento < dataMinima) {
+            setErro("A data de nascimento é muito antiga.");
+            return;
+        }
+
         try {
-            // Formatar CPF (remover máscara)
+            // Remove a máscara do CPF antes de enviar para a API
             const cpfLimpo = cliente.cpf.replace(/\D/g, '');
             const clienteParaEnviar = { ...cliente, cpf: cpfLimpo };
 
@@ -50,8 +83,9 @@ export const ClienteForm = ({ onClienteAdicionado }) => {
                 <label>Nome:</label>
                 <input
                     type="text"
+                    name="nome"
                     value={cliente.nome}
-                    onChange={(e) => setCliente({ ...cliente, nome: e.target.value })}
+                    onChange={handleChange}
                     required
                 />
             </div>
@@ -60,9 +94,11 @@ export const ClienteForm = ({ onClienteAdicionado }) => {
                 <label>CPF:</label>
                 <input
                     type="text"
+                    name="cpf"
                     value={cliente.cpf}
-                    onChange={(e) => setCliente({ ...cliente, cpf: e.target.value })}
+                    onChange={handleChange}
                     placeholder="000.000.000-00"
+                    maxLength="14"
                     required
                 />
             </div>
@@ -71,8 +107,11 @@ export const ClienteForm = ({ onClienteAdicionado }) => {
                 <label>Data de Nascimento:</label>
                 <input
                     type="date"
+                    name="dataNascimento"
                     value={cliente.dataNascimento}
-                    onChange={(e) => setCliente({ ...cliente, dataNascimento: e.target.value })}
+                    onChange={handleChange}
+                    max={new Date().toISOString().split("T")[0]} // Define o limite máximo como hoje
+                    min={new Date(new Date().setFullYear(new Date().getFullYear() - 150)).toISOString().split("T")[0]} // Define o mínimo como 150 anos atrás
                     required
                 />
             </div>
@@ -81,8 +120,9 @@ export const ClienteForm = ({ onClienteAdicionado }) => {
                 <label>Endereço:</label>
                 <input
                     type="text"
+                    name="endereco"
                     value={cliente.endereco}
-                    onChange={(e) => setCliente({ ...cliente, endereco: e.target.value })}
+                    onChange={handleChange}
                 />
             </div>
 

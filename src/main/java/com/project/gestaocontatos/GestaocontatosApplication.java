@@ -13,6 +13,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDate;
 
+// npm run dev <-- codigo pa fazer o front rodar
+
 @SpringBootApplication
 public class GestaocontatosApplication {
 

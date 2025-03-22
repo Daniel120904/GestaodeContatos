@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getClienteById, updateCliente, deleteCliente } from '../services/api';
+import ContatoForm from './ContatoForm'; // Importando o novo componente
 
 export default function EditarCliente() {
     const { id } = useParams();
@@ -20,6 +21,7 @@ export default function EditarCliente() {
                 const data = await getClienteById(id);
                 setCliente({
                     ...data,
+                    cpf: formatarCPF(data.cpf),
                     contatos: data.contatos || []
                 });
             } catch (error) {
@@ -29,8 +31,22 @@ export default function EditarCliente() {
         carregarCliente();
     }, [id]);
 
+    const formatarCPF = (cpf) => {
+        const cpfLimpo = cpf.replace(/\D/g, '');
+        return cpfLimpo
+            .replace(/^(\d{3})(\d)/, '$1.$2')
+            .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
+            .replace(/\.(\d{3})(\d)/, '.$1-$2')
+            .slice(0, 14);
+    };
+
     const handleChange = (e) => {
-        setCliente({ ...cliente, [e.target.name]: e.target.value });
+        let { name, value } = e.target;
+        if (name === "cpf") {
+            value = formatarCPF(value);
+        }
+
+        setCliente({ ...cliente, [name]: value });
     };
 
     const handleContatoChange = (index, campo, valor) => {
@@ -55,8 +71,24 @@ export default function EditarCliente() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErro("");
+
+        const dataAtual = new Date();
+        const dataNascimento = new Date(cliente.dataNascimento);
+        const dataMinima = new Date();
+        dataMinima.setFullYear(dataAtual.getFullYear() - 150); // Define o limite mínimo
+
+        // Validações apenas no momento do envio
+        if (dataNascimento > dataAtual) {
+            setErro("A data de nascimento não pode ser no futuro.");
+            return;
+        } else if (dataNascimento < dataMinima) {
+            setErro("A data de nascimento é muito antiga.");
+            return;
+        }
+
         try {
-            await updateCliente(id, cliente);
+            await updateCliente(id, { ...cliente, cpf: cliente.cpf.replace(/\D/g, '') });
             navigate('/');
         } catch (error) {
             setErro(error.message || 'Erro ao atualizar cliente');
@@ -78,7 +110,10 @@ export default function EditarCliente() {
 
     return (
         <div className="editar-cliente">
-            <h2>Editar Cliente</h2>
+            <div className="header">
+                <h2>Editar Cliente</h2>
+                <button type="button" onClick={() => navigate('/')} className="btn-voltar">⬅</button>
+            </div>
 
             {erro && <div className="erro">{erro}</div>}
 
@@ -90,55 +125,43 @@ export default function EditarCliente() {
 
                 <div className="campo">
                     <label>CPF:</label>
-                    <input type="text" name="cpf" value={cliente.cpf} onChange={handleChange} required />
+                    <input type="text" name="cpf" value={cliente.cpf} onChange={handleChange} maxLength="14" required />
                 </div>
 
                 <div className="campo">
                     <label>Data Nascimento:</label>
-                    <input type="date" name="dataNascimento" value={cliente.dataNascimento} onChange={handleChange} required />
+                    <input
+                        type="date"
+                        name="dataNascimento"
+                        value={cliente.dataNascimento}
+                        onChange={handleChange}
+                        max={new Date().toISOString().split("T")[0]} // Define o limite máximo como hoje
+                        min={new Date(new Date().setFullYear(new Date().getFullYear() - 150)).toISOString().split("T")[0]} // Define o mínimo como 150 anos atrás
+                        required
+                    />
                 </div>
 
                 <div className="campo">
                     <label>Endereço:</label>
-                    <input type="text" name="endereco" value={cliente.endereco} onChange={handleChange} />
+                    <input type="text" name="endereco" value={cliente.endereco} onChange={handleChange}/>
                 </div>
 
-                {/* Contatos */}
-                <div className="contatos">
-                    <h3>Contatos</h3>
-
-                    {cliente.contatos.length > 0 ? (
-                        cliente.contatos.map((contato, index) => (
-                            <div key={index} className="contato-item">
-                                <label>Tipo:</label>
-                                <select value={contato.tipo} onChange={(e) => handleContatoChange(index, 'tipo', e.target.value)}>
-                                    <option value="Telefone">Telefone</option>
-                                    <option value="E-mail">E-mail</option>
-                                </select>
-
-                                <label>Valor:</label>
-                                <input type="text" placeholder="Valor" value={contato.valor} onChange={(e) => handleContatoChange(index, 'valor', e.target.value)} required />
-
-                                <label>Observação:</label>
-                                <input type="text" placeholder="Observação" value={contato.observacao} onChange={(e) => handleContatoChange(index, 'observacao', e.target.value)} />
-
-                                <button type="button" onClick={() => removerContato(index)} className="btn-remover">Remover</button>
-                            </div>
-                        ))
-                    ) : (
-                        <p>Nenhum contato cadastrado.</p>
-                    )}
-
-                    <button type="button" onClick={adicionarContato} className="btn-adicionar">Adicionar Contato</button>
-                </div>
+                {/* Chamando o componente ContatoForm */}
+                <ContatoForm
+                    contatos={cliente.contatos}
+                    onContatoChange={handleContatoChange}
+                    onAdicionarContato={adicionarContato}
+                    onRemoverContato={removerContato}
+                />
 
                 <button type="submit">Salvar Alterações</button>
             </form>
 
-            {/* Botão de exclusão no final */}
-            <button type="button" onClick={handleDelete} className="btn-excluir">
+            {/* Botão de exclusão */}
+            <button type="button" onClick={handleDelete} className="btn-excluir cursor-pointer">
                 Excluir Cliente
             </button>
         </div>
     );
+
 }

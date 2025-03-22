@@ -165,35 +165,10 @@ button[type="submit"]:hover {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.contato-item {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
 .contato-item select,
 .contato-item input {
   flex: 1;
   padding: 8px;
-}
-
-.btn-remover {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-adicionar {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 10px;
 }
 
 .editar-cliente {
@@ -248,3 +223,88 @@ button[type="submit"]:hover {
   background-color: #e74c3c;
   color: white;
 }
+.btn-excluir {
+  cursor: pointer;
+}
+
+.editar-cliente .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-voltar {
+  background-color: #ccc;
+  border: none;
+  padding: 5px 10px;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: auto;
+  height: auto;
+}
+
+.btn-voltar:hover {
+  background-color: #bbb;
+}
+
+.contatos-container {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.contato-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.contato-item input,
+.contato-item select {
+  padding: 8px;
+  font-size: 16px;
+  width: 96%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.contato-item label {
+  font-weight: bold;
+}
+
+.btn-adicionar {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-adicionar:hover {
+  background-color: #218838;
+}
+
+.btn-remover {
+  background-color: #dc3545;
+  color: white;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-remover:hover {
+  background-color: #c82333;
+}
+
