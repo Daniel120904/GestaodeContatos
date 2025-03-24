@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { createCliente } from '../services/api';
+import { formatarCPF, removerMascaraCPF, validarCPF, validarDataNascimento, sanitizarTexto } from '../utils/validacoes';
 
 export const ClienteForm = ({ onClienteAdicionado }) => {
     const [cliente, setCliente] = useState({
@@ -8,24 +9,15 @@ export const ClienteForm = ({ onClienteAdicionado }) => {
         dataNascimento: '',
         endereco: ''
     });
-
     const [erro, setErro] = useState('');
-
-    // Função para formatar CPF conforme o usuário digita
-    const formatarCPF = (valor) => {
-        return valor
-            .replace(/\D/g, '') // Remove tudo que não for número
-            .replace(/(\d{3})(\d)/, '$1.$2')
-            .replace(/(\d{3})(\d)/, '$1.$2')
-            .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
-            .slice(0, 14); // Limita a 14 caracteres
-    };
+    const [mostrarModalSucesso, setMostrarModalSucesso] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        let novoValor = value;
 
-        // Aplica formatação ao CPF
-        const novoValor = name === 'cpf' ? formatarCPF(value) : value;
+        if (name === "cpf") novoValor = formatarCPF(value);
+        if (name === "nome" || name === "endereco") novoValor = sanitizarTexto(value);
 
         setCliente({ ...cliente, [name]: novoValor });
     };
@@ -34,42 +26,27 @@ export const ClienteForm = ({ onClienteAdicionado }) => {
         e.preventDefault();
         setErro('');
 
-        const dataAtual = new Date();
-        const dataNascimento = new Date(cliente.dataNascimento);
-        const dataMinima = new Date();
-        dataMinima.setFullYear(dataAtual.getFullYear() - 150); // Define o limite mínimo
-
-        // Validações apenas no momento do envio
-        if (dataNascimento > dataAtual) {
-            setErro("A data de nascimento não pode ser no futuro.");
+        // Validação da Data de Nascimento
+        const erroData = validarDataNascimento(cliente.dataNascimento);
+        if (erroData) {
+            setErro(erroData);
             return;
-        } else if (dataNascimento < dataMinima) {
-            setErro("A data de nascimento é muito antiga.");
+        }
+
+        // Validação do CPF
+        if (!validarCPF(cliente.cpf)) {
+            setErro("CPF inválido.");
             return;
         }
 
         try {
-            // Remove a máscara do CPF antes de enviar para a API
-            const cpfLimpo = cliente.cpf.replace(/\D/g, '');
-            const clienteParaEnviar = { ...cliente, cpf: cpfLimpo };
-
+            const clienteParaEnviar = { ...cliente, cpf: removerMascaraCPF(cliente.cpf) };
             await createCliente(clienteParaEnviar);
-
-            // Limpar formulário
-            setCliente({
-                nome: '',
-                cpf: '',
-                dataNascimento: '',
-                endereco: ''
-            });
-
-            // Atualizar lista de clientes
+            setCliente({ nome: '', cpf: '', dataNascimento: '', endereco: '' });
             if (onClienteAdicionado) onClienteAdicionado();
-
-            alert('Cliente cadastrado com sucesso!');
+            setMostrarModalSucesso(true); // ✅ Exibe modal de sucesso
         } catch (error) {
             setErro(error.response?.data || 'Erro ao cadastrar cliente');
-            console.error('Erro:', error);
         }
     };
 
@@ -127,6 +104,21 @@ export const ClienteForm = ({ onClienteAdicionado }) => {
             </div>
 
             <button type="submit">Salvar</button>
+
+            {mostrarModalSucesso && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <p>Cliente Salvo com Sucesso</p>
+                        <div className="modal-botoes">
+                            <button className="btn-confirmar" onClick={() => {
+                                setMostrarModalSucesso(false);
+                                navigate('/');
+                            }}>OK</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </form>
+
     );
 };

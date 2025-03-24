@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getClienteById, updateCliente, deleteCliente } from '../services/api';
 import ContatoForm from './ContatoForm'; // Importando o novo componente
+import { formatarCPF, removerMascaraCPF, validarCPF, validarDataNascimento, sanitizarTexto } from '../utils/validacoes';
 
 export default function EditarCliente() {
     const { id } = useParams();
@@ -14,6 +15,8 @@ export default function EditarCliente() {
         contatos: []
     });
     const [erro, setErro] = useState('');
+    const [mostrarModal, setMostrarModal] = useState(false); // ✅ Controla exibição do modal
+    const [mostrarModalSucesso, setMostrarModalSucesso] = useState(false); // ✅ Modal para "Dados Salvos"
 
     useEffect(() => {
         const carregarCliente = async () => {
@@ -31,22 +34,14 @@ export default function EditarCliente() {
         carregarCliente();
     }, [id]);
 
-    const formatarCPF = (cpf) => {
-        const cpfLimpo = cpf.replace(/\D/g, '');
-        return cpfLimpo
-            .replace(/^(\d{3})(\d)/, '$1.$2')
-            .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
-            .replace(/\.(\d{3})(\d)/, '.$1-$2')
-            .slice(0, 14);
-    };
-
     const handleChange = (e) => {
-        let { name, value } = e.target;
-        if (name === "cpf") {
-            value = formatarCPF(value);
-        }
+        const { name, value } = e.target;
+        let novoValor = value;
 
-        setCliente({ ...cliente, [name]: value });
+        if (name === "cpf") novoValor = formatarCPF(value);
+        if (name === "nome" || name === "endereco") novoValor = sanitizarTexto(value);
+
+        setCliente({ ...cliente, [name]: novoValor });
     };
 
     const handleContatoChange = (index, campo, valor) => {
@@ -71,41 +66,43 @@ export default function EditarCliente() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErro("");
+        setErro('');
 
-        const dataAtual = new Date();
-        const dataNascimento = new Date(cliente.dataNascimento);
-        const dataMinima = new Date();
-        dataMinima.setFullYear(dataAtual.getFullYear() - 150); // Define o limite mínimo
-
-        // Validações apenas no momento do envio
-        if (dataNascimento > dataAtual) {
-            setErro("A data de nascimento não pode ser no futuro.");
+        // Validação da Data de Nascimento
+        const erroData = validarDataNascimento(cliente.dataNascimento);
+        if (erroData) {
+            setErro(erroData);
             return;
-        } else if (dataNascimento < dataMinima) {
-            setErro("A data de nascimento é muito antiga.");
+        }
+
+        // Validação do CPF
+        if (!validarCPF(cliente.cpf)) {
+            setErro("CPF inválido.");
             return;
         }
 
         try {
-            await updateCliente(id, { ...cliente, cpf: cliente.cpf.replace(/\D/g, '') });
-            navigate('/');
+            await updateCliente(id, { ...cliente, cpf: removerMascaraCPF(cliente.cpf) });
+            setMostrarModalSucesso(true); // ✅ Exibe modal de sucesso
         } catch (error) {
             setErro(error.message || 'Erro ao atualizar cliente');
         }
     };
 
-    const handleDelete = async () => {
-        const confirmacao = window.confirm("Tem certeza que deseja excluir este cliente? Essa ação não pode ser desfeita.");
-        if (confirmacao) {
-            try {
-                await deleteCliente(id);
-                alert("Cliente excluído com sucesso!");
-                navigate('/');
-            } catch (error) {
-                setErro('Erro ao excluir cliente');
-            }
+    // ✅ Abre o modal ao clicar em "Excluir Cliente"
+    const abrirModalExclusao = () => {
+        setMostrarModal(true);
+    };
+
+    // ✅ Se o usuário confirmar, o cliente será excluído
+    const handleExcluir = async () => {
+        try {
+            await deleteCliente(id);
+            navigate('/');
+        } catch (error) {
+            setErro('Erro ao excluir cliente');
         }
+        setMostrarModal(false); // Fecha o modal
     };
 
     return (
@@ -157,10 +154,38 @@ export default function EditarCliente() {
                 <button type="submit">Salvar Alterações</button>
             </form>
 
-            {/* Botão de exclusão */}
-            <button type="button" onClick={handleDelete} className="btn-excluir cursor-pointer">
+            {/* Botão de exclusão que abre o modal */}
+            <button type="button" onClick={abrirModalExclusao} className="btn-excluir cursor-pointer">
                 Excluir Cliente
             </button>
+
+            {/* ✅ Modal de confirmação embutido */}
+            {mostrarModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <p>Tem certeza que deseja excluir este cliente?</p>
+                        <div className="modal-botoes">
+                            <button className="btn-confirmar" onClick={handleExcluir}>Confirmar</button>
+                            <button className="btn-cancelar" onClick={() => setMostrarModal(false)}>Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ✅ Modal de sucesso ao salvar */}
+            {mostrarModalSucesso && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <p>Dados Salvos com Sucesso!</p>
+                        <div className="modal-botoes">
+                            <button className="btn-confirmar" onClick={() => {
+                                setMostrarModalSucesso(false);
+                                navigate('/');
+                            }}>OK</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 

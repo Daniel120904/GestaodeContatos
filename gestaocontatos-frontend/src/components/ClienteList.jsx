@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getClientes } from '../services/api';
+import { formatarCPF } from '../utils/validacoes';
 import { FaEdit } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
@@ -73,7 +74,7 @@ export const ClienteList = () => {
                                 <div key={cliente.id} className="cliente-item">
                                     <div className="cliente-detalhes">
                                         <h3>{cliente.nome}</h3>
-                                        <p><strong>CPF:</strong> {cliente.cpf}</p>
+                                        <p><strong>CPF:</strong> {formatarCPF(cliente.cpf)}</p> {/* ✅ Formatando o CPF */}
                                         <p><strong>Nascimento:</strong> {new Date(cliente.dataNascimento).toLocaleDateString()}</p>
                                         <p><strong>Endereço:</strong> {cliente.endereco}</p>
                                     </div>

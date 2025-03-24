@@ -68,7 +68,6 @@ button[type="submit"] {
   padding: 20px;
   background: #fff;
   border-radius: 8px;
-  margin: 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -118,7 +117,9 @@ button[type="submit"] {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+  max-height: 470px;
+  overflow-y: auto;
 }
 
 .campo {
@@ -308,3 +309,52 @@ button[type="submit"]:hover {
   background-color: #c82333;
 }
 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.modal-botoes {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-confirmar, .btn-cancelar {
+  background: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
+.btn-cancelar {
+  background: #6c757d;
+}
+
+.btn-confirmar:hover {
+  background: #218838;
+}
+
+.btn-cancelar:hover {
+  background: #5a6268;
+}
