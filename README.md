@@ -8,8 +8,8 @@ Tecnologias Utilizadas:
 - **Front-end:** React, Vite, Axios
 - **Banco de Dados:** MySQL
 
-## Estrutura do Projeto
-
+Estrutura do Projeto
+``` 
 gestaocontatos-frontend/
 │── src/
 │   ├── components/              # Componentes React
@@ -35,6 +35,7 @@ src/main/java/com/exemplo/gestaocontatos/
 │   ├── service/                    # Lógica de negócio
 │   │   ├── ClienteService.java     # Métodos para gerenciar clientes
 │   ├── GestaoContatosApplication.java # Classe principal do Spring Boot
+```
 
 **Configuração do Ambiente**
 
