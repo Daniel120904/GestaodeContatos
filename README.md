@@ -8,7 +8,7 @@ Tecnologias Utilizadas:
 - **Front-end:** React, Vite, Axios
 - **Banco de Dados:** MySQL
 
-Estrutura do Projeto:
+## Estrutura do Projeto
 
 gestaocontatos-frontend/
 │── src/
@@ -25,8 +25,7 @@ gestaocontatos-frontend/
 │   ├── index.css                 # Estilos globais do projeto
 │   ├── index.html                # Estrutura HTML da aplicação
 │
-gestaocontatos-backend/
-│── src/main/java/com/exemplo/gestaocontatos/
+src/main/java/com/exemplo/gestaocontatos/
 │   ├── controller/                # Endpoints da API
 │   ├── model/                     # Representação das entidades do banco de dados
 │   │   ├── Cliente.java           # Atributos do cliente
@@ -36,13 +35,6 @@ gestaocontatos-backend/
 │   ├── service/                    # Lógica de negócio
 │   │   ├── ClienteService.java     # Métodos para gerenciar clientes
 │   ├── GestaoContatosApplication.java # Classe principal do Spring Boot
-│
-├── script.sql                     # Script para criação e população do banco de dados
-├── README.md                       # Documentação do projeto
-├── checklist.txt                    # Lista de funcionalidades implementadas
-
-
-
 
 **Configuração do Ambiente**
 
