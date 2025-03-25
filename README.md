@@ -8,35 +8,37 @@ Tecnologias Utilizadas:
 - **Front-end:** React, Vite, Axios
 - **Banco de Dados:** MySQL
 
-Estrutura do Projeto
+Estrutura do Projeto:
 
--gestaocontatos-frontend/src
---components
----ClienteForm.jsx: Contém os metodos e interface do formulario do cliente
-    ClienteList.jsx: Contém os metodos e interface do da listagem de todos os clientes
-    ContatoForm.jsx: Contém a interface do formulario do contato
-    EditarCliente.jsx: Contém os metodos e interface do formulario para editar o cliente e contatos
-Service
-    api.js: Contém a configuração para acesso aos dados 
-utils
-    validacoes.js: Contém os metodos para as interfaces
-App.jsx: Cnteém a interface da pagina inicial
-index.css: Contém os estilos para as interfaces
-index.html: Cóntem o html da pagina
+gestaocontatos-frontend/
+│── src/
+│   ├── components/              # Componentes React
+│   │   ├── ClienteForm.jsx       # Formulário de cadastro de clientes
+│   │   ├── ClienteList.jsx       # Lista de clientes cadastrados
+│   │   ├── ContatoForm.jsx       # Formulário para adicionar contatos
+│   │   ├── EditarCliente.jsx     # Formulário de edição de cliente e contatos
+│   ├── service/
+│   │   ├── api.js                # Configuração de acesso aos dados (API)
+│   ├── utils/
+│   │   ├── validacoes.js          # Métodos de validação e sanitização
+│   ├── App.jsx                   # Interface da página inicial
+│   ├── index.css                 # Estilos globais do projeto
+│   ├── index.html                # Estrutura HTML da aplicação
+│
+src/main/java/com/exemplo/gestaocontatos/
+│   ├── controller/                # Endpoints da API
+│   ├── model/                     # Representação das entidades do banco de dados
+│   │   ├── Cliente.java           # Atributos do cliente
+│   │   ├── Contato.java           # Atributos do contato
+│   ├── repository/                 # Interfaces que estendem JpaRepository
+│   │   ├── ClienteRepository.java  # Interface para operações com Cliente
+│   ├── service/                    # Lógica de negócio
+│   │   ├── ClienteService.java     # Métodos para gerenciar clientes
+│   ├── GestaoContatosApplication.java # Classe principal do Spring Boot
+│
+├── README.md                       # Documentação do projeto
 
-src/main/java
-com
-    xemplo
-        gestaocontatos
-            controller:  Contém os endpoints para API 
-            model: Contém as classes que representam as entidades do banco de dados
-                Cliente.java: Contém os atributos do cliente
-                Contato.java: Contém os atributos do contato
-            repository: Contém as interfaces que estendem JpaRepository para acesso aos dados 
-                ClienteRepository.java: estende os dados do cliente para a inteface
-            service: Contém a lógica de negócio
-                ClienteService.java: Contem os metodos para o cliente
-            GestaoContatosApplication.java
+
 
 **Configuração do Ambiente**
 
