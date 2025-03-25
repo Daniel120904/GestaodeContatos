@@ -1,7 +1,3 @@
-README.md Formatado
-md
-Copiar
-Editar
 # Gestão de Contatos
 
 Um sistema web para cadastro e gerenciamento de clientes e seus contatos, desenvolvido com **Spring Boot (Back-end) e React (Front-end)**.
@@ -15,39 +11,58 @@ Um sistema web para cadastro e gerenciamento de clientes e seus contatos, desenv
 - **Banco de Dados:** MySQL  
 
 ---
-
+```
 ## Estrutura do Projeto
-
-gestaocontatos-frontend/ │── src/ │ ├── components/ # Componentes React │ │ ├── ClienteForm.jsx # Formulário de cadastro de clientes │ │ ├── ClienteList.jsx # Lista de clientes cadastrados │ │ ├── ContatoForm.jsx # Formulário para adicionar contatos │ │ ├── EditarCliente.jsx # Formulário de edição de cliente e contatos │ ├── service/ │ │ ├── api.js # Configuração de acesso aos dados (API) │ ├── utils/ │ │ ├── validacoes.js # Métodos de validação e sanitização │ ├── App.jsx # Interface da página inicial │ ├── index.css # Estilos globais do projeto │ ├── index.html # Estrutura HTML da aplicação │ gestaocontatos-backend/ │── src/main/java/com/exemplo/gestaocontatos/ │ ├── controller/ # Endpoints da API │ ├── model/ # Representação das entidades do banco de dados │ │ ├── Cliente.java # Atributos do cliente │ │ ├── Contato.java # Atributos do contato │ ├── repository/ # Interfaces que estendem JpaRepository │ │ ├── ClienteRepository.java # Interface para operações com Cliente │ ├── service/ # Lógica de negócio │ │ ├── ClienteService.java # Métodos para gerenciar clientes │ ├── GestaoContatosApplication.java # Classe principal do Spring Boot
-
-yaml
-Copiar
-Editar
-
 ---
-
+gestaocontatos-frontend/
+│── src/
+│   ├── components/              # Componentes React
+│   │   ├── ClienteForm.jsx       # Formulário de cadastro de clientes
+│   │   ├── ClienteList.jsx       # Lista de clientes cadastrados
+│   │   ├── ContatoForm.jsx       # Formulário para adicionar contatos
+│   │   ├── EditarCliente.jsx     # Formulário de edição de cliente e contatos
+│   ├── service/
+│   │   ├── api.js                # Configuração de acesso aos dados (API)
+│   ├── utils/
+│   │   ├── validacoes.js          # Métodos de validação e sanitização
+│   ├── App.jsx                   # Interface da página inicial
+│   ├── index.css                 # Estilos globais do projeto
+│   ├── index.html                # Estrutura HTML da aplicação
+│
+src/main/java/com/exemplo/gestaocontatos/
+│   ├── controller/                # Endpoints da API
+│   ├── model/                     # Representação das entidades do banco de dados
+│   │   ├── Cliente.java           # Atributos do cliente
+│   │   ├── Contato.java           # Atributos do contato
+│   ├── repository/                 # Interfaces que estendem JpaRepository
+│   │   ├── ClienteRepository.java  # Interface para operações com Cliente
+│   ├── service/                    # Lógica de negócio
+│   │   ├── ClienteService.java     # Métodos para gerenciar clientes
+│   ├── GestaoContatosApplication.java # Classe principal do Spring Boot
+---
+```
 ## **Configuração do Ambiente**
 
 ### **Clonar o Repositório**
 ```sh
 git clone https://github.com/Daniel120904/GestaodeContatos.git
 cd gestao-contatos
-2️⃣ Criar o Banco no MySQL
-📌 Opção 1: Rodar o Script SQL no Terminal
+Criar o Banco no MySQL
+Opção 1: Rodar o Script SQL no Terminal
 sh
 Copiar
 Editar
 mysql -u root -p gestao_contatos < script.sql
-📌 Opção 2: Criar e Popular Manualmente no MySQL Workbench
+Opção 2: Criar e Popular Manualmente no MySQL Workbench
 sql
 Copiar
 Editar
 CREATE DATABASE gestao_contatos;
 USE gestao_contatos;
-📌 Configuração do Banco
+Configuração do Banco
 No arquivo gestaocontatos-backend/src/main/resources/application.properties, certifique-se de alterar as credenciais do MySQL para seu usuário e senha.
 
-📜 Script de População do Banco para Testes
+Script de População do Banco para Testes
 sql
 Copiar
 Editar
