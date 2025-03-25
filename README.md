@@ -11,31 +11,32 @@ Tecnologias Utilizadas:
 Estrutura do Projeto
 
 gestaocontatos-frontend/src
-└── components
-    ├── ClienteForm.jsx: Contém os metodos e interface do formulario do cliente
-    ├── ClienteList.jsx: Contém os metodos e interface do da listagem de todos os clientes
-    ├── ContatoForm.jsx: Contém a interface do formulario do contato
-    └── EditarCliente.jsx: Contém os metodos e interface do formulario para editar o cliente e contatos
-└── Service
-    └── api.js: Contém a configuração para acesso aos dados 
-└── utils
-    └── validacoes.js: Contém os metodos para as interfaces
-└── App.jsx: Cnteém a interface da pagina inicial
-└── index.css: Contém os estilos para as interfaces
-└── index.html: Cóntem o html da pagina
+components
+    ClienteForm.jsx: Contém os metodos e interface do formulario do cliente
+    ClienteList.jsx: Contém os metodos e interface do da listagem de todos os clientes
+    ContatoForm.jsx: Contém a interface do formulario do contato
+    EditarCliente.jsx: Contém os metodos e interface do formulario para editar o cliente e contatos
+Service
+    api.js: Contém a configuração para acesso aos dados 
+utils
+    validacoes.js: Contém os metodos para as interfaces
+App.jsx: Cnteém a interface da pagina inicial
+index.css: Contém os estilos para as interfaces
+index.html: Cóntem o html da pagina
+
 src/main/java
-└── com
-    └── exemplo
-        └── gestaocontatos
-            ├── controller:  Contém os endpoints para API 
-            ├── model: Contém as classes que representam as entidades do banco de dados
-                ├── Cliente.java: Contém os atributos do cliente
-                └── Contato.java: Contém os atributos do contato
-            ├── repository: Contém as interfaces que estendem JpaRepository para acesso aos dados 
-                └── ClienteRepository.java: estende os dados do cliente para a inteface
-            ├── service: Contém a lógica de negócio
-                └── ClienteService.java: Contem os metodos para o cliente
-            └── GestaoContatosApplication.java
+com
+    xemplo
+        gestaocontatos
+            controller:  Contém os endpoints para API 
+            model: Contém as classes que representam as entidades do banco de dados
+                Cliente.java: Contém os atributos do cliente
+                Contato.java: Contém os atributos do contato
+            repository: Contém as interfaces que estendem JpaRepository para acesso aos dados 
+                ClienteRepository.java: estende os dados do cliente para a inteface
+            service: Contém a lógica de negócio
+                ClienteService.java: Contem os metodos para o cliente
+            GestaoContatosApplication.java
 
 **Configuração do Ambiente**
 
