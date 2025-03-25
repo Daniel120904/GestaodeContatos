@@ -78,10 +78,24 @@ INSERT INTO contato (cliente_id, tipo, valor, observacao) VALUES
 
 Execução do Projeto
 
-Executar o Back-end (Spring Boot):
-cd gestaocontatos-backend
-mvn spring-boot:run
+**Pré-requisitos para Rodar o Projeto**
+Antes de executar a aplicação, certifique-se de que possui os seguintes softwares instalados:
 
+### **Back-end (Spring Boot)**
+- [Java JDK 17+](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)  
+- [Apache Maven](https://maven.apache.org/download.cgi)  
+- [MySQL Server](https://dev.mysql.com/downloads/installer/)  
+
+**Para instalar dependências do Spring Boot**, basta rodar o comando:  
+mvn clean install
+
+Front-end (React)
+- Node.js (v16+)
+- [Gerenciador de pacotes npm (vem com o Node.js)]
+
+Executar o Back-end (Spring Boot):
+cd gestaocontatos-src
+mvn spring-boot:run
 Ou execute a classe GestaoContatosApplication na sua IDE
 
 O servidor estará disponível em http://localhost:8080
