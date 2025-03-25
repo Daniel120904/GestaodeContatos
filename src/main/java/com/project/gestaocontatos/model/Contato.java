@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor // Gera um construtor sem argumentos
-@AllArgsConstructor // Gera um construtor com todos os argumentos
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Contato {
     @Id
@@ -14,20 +14,20 @@ public class Contato {
     private Long id;
 
     @Column(nullable = false, length = 50)
-    private String tipo; // Ex: "Telefone", "E-mail"
+    private String tipo;
 
     @Column(nullable = false, length = 100)
-    private String valor; // Ex: "123456789", "email@exemplo.com"
+    private String valor;
 
     @Column(length = 255)
     private String observacao;
 
-    @JsonBackReference // Evita loop infinito
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
-
+    //gets e sets
     public Long getId() {
         return id;
     }

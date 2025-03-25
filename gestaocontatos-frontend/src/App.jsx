@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ClienteForm } from './components/ClienteForm';
 import { ClienteList } from './components/ClienteList';
-import EditarCliente from './components/EditarCliente'; // Importação correta
+import EditarCliente from './components/EditarCliente';
 import { useState } from 'react';
 
 const Home = ({ refreshKey, onClienteAdicionado }) => {

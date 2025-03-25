@@ -1,7 +1,6 @@
 package com.project.gestaocontatos.service;
 
 import com.project.gestaocontatos.model.Cliente;
-import com.project.gestaocontatos.model.Contato;
 import com.project.gestaocontatos.repository.ClienteRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class ClienteService {
 
     public List<Cliente> listarTodos() {
         System.out.println("Buscando todos os clientes...");
-        return clienteRepository.findAll(); // Usa o metodo padrão do JpaRepository
+        return clienteRepository.findAll();
     }
 
     @Transactional
@@ -33,12 +32,10 @@ public class ClienteService {
     public Cliente atualizarCliente(Long id, Cliente clienteAtualizado) {
         return clienteRepository.findById(id)
                 .map(cliente -> {
-                    // Atualiza dados básicos
                     cliente.setNome(clienteAtualizado.getNome());
                     cliente.setDataNascimento(clienteAtualizado.getDataNascimento());
                     cliente.setEndereco(clienteAtualizado.getEndereco());
 
-                    // Atualiza CPF (se alterado)
                     if (!cliente.getCpf().equals(clienteAtualizado.getCpf())) {
                         if (clienteRepository.findByCpf(clienteAtualizado.getCpf()).isPresent()) {
                             throw new IllegalArgumentException("CPF já cadastrado");
@@ -46,7 +43,6 @@ public class ClienteService {
                         cliente.setCpf(clienteAtualizado.getCpf());
                     }
 
-                    // Atualiza contatos (remove antigos e adiciona novos)
                     cliente.getContatos().clear();
                     clienteAtualizado.getContatos().forEach(contato -> {
                         contato.setCliente(cliente);

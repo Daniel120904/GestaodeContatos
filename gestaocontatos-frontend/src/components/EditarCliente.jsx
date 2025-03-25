@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getClienteById, updateCliente, deleteCliente } from '../services/api';
 import ContatoForm from './ContatoForm'; // Importando o novo componente
-import { formatarCPF, removerMascaraCPF, validarCPF, validarDataNascimento, sanitizarTexto } from '../utils/validacoes';
+import { formatarCPF, removerMascaraCPF, validarCPF, validarDataNascimento } from '../utils/validacoes';
 
 export default function EditarCliente() {
     const { id } = useParams();
@@ -15,8 +15,8 @@ export default function EditarCliente() {
         contatos: []
     });
     const [erro, setErro] = useState('');
-    const [mostrarModal, setMostrarModal] = useState(false); // ✅ Controla exibição do modal
-    const [mostrarModalSucesso, setMostrarModalSucesso] = useState(false); // ✅ Modal para "Dados Salvos"
+    const [mostrarModal, setMostrarModal] = useState(false);
+    const [mostrarModalSucesso, setMostrarModalSucesso] = useState(false);
 
     useEffect(() => {
         const carregarCliente = async () => {
@@ -39,7 +39,6 @@ export default function EditarCliente() {
         let novoValor = value;
 
         if (name === "cpf") novoValor = formatarCPF(value);
-        if (name === "nome" || name === "endereco") novoValor = sanitizarTexto(value);
 
         setCliente({ ...cliente, [name]: novoValor });
     };
@@ -68,14 +67,12 @@ export default function EditarCliente() {
         e.preventDefault();
         setErro('');
 
-        // Validação da Data de Nascimento
         const erroData = validarDataNascimento(cliente.dataNascimento);
         if (erroData) {
             setErro(erroData);
             return;
         }
 
-        // Validação do CPF
         if (!validarCPF(cliente.cpf)) {
             setErro("CPF inválido.");
             return;
@@ -83,18 +80,16 @@ export default function EditarCliente() {
 
         try {
             await updateCliente(id, { ...cliente, cpf: removerMascaraCPF(cliente.cpf) });
-            setMostrarModalSucesso(true); // ✅ Exibe modal de sucesso
+            setMostrarModalSucesso(true);
         } catch (error) {
             setErro(error.message || 'Erro ao atualizar cliente');
         }
     };
 
-    // ✅ Abre o modal ao clicar em "Excluir Cliente"
     const abrirModalExclusao = () => {
         setMostrarModal(true);
     };
 
-    // ✅ Se o usuário confirmar, o cliente será excluído
     const handleExcluir = async () => {
         try {
             await deleteCliente(id);
@@ -102,7 +97,7 @@ export default function EditarCliente() {
         } catch (error) {
             setErro('Erro ao excluir cliente');
         }
-        setMostrarModal(false); // Fecha o modal
+        setMostrarModal(false);
     };
 
     return (
@@ -132,8 +127,8 @@ export default function EditarCliente() {
                         name="dataNascimento"
                         value={cliente.dataNascimento}
                         onChange={handleChange}
-                        max={new Date().toISOString().split("T")[0]} // Define o limite máximo como hoje
-                        min={new Date(new Date().setFullYear(new Date().getFullYear() - 150)).toISOString().split("T")[0]} // Define o mínimo como 150 anos atrás
+                        max={new Date().toISOString().split("T")[0]}
+                        min={new Date(new Date().setFullYear(new Date().getFullYear() - 150)).toISOString().split("T")[0]}
                         required
                     />
                 </div>
@@ -143,7 +138,6 @@ export default function EditarCliente() {
                     <input type="text" name="endereco" value={cliente.endereco} onChange={handleChange}/>
                 </div>
 
-                {/* Chamando o componente ContatoForm */}
                 <ContatoForm
                     contatos={cliente.contatos}
                     onContatoChange={handleContatoChange}
@@ -154,12 +148,10 @@ export default function EditarCliente() {
                 <button type="submit">Salvar Alterações</button>
             </form>
 
-            {/* Botão de exclusão que abre o modal */}
             <button type="button" onClick={abrirModalExclusao} className="btn-excluir cursor-pointer">
                 Excluir Cliente
             </button>
 
-            {/* ✅ Modal de confirmação embutido */}
             {mostrarModal && (
                 <div className="modal-overlay">
                     <div className="modal-content">
@@ -172,7 +164,6 @@ export default function EditarCliente() {
                 </div>
             )}
 
-            {/* ✅ Modal de sucesso ao salvar */}
             {mostrarModalSucesso && (
                 <div className="modal-overlay">
                     <div className="modal-content">

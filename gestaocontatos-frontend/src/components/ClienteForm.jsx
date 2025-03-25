@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createCliente } from '../services/api';
-import { formatarCPF, removerMascaraCPF, validarCPF, validarDataNascimento, sanitizarTexto } from '../utils/validacoes';
+import { formatarCPF, removerMascaraCPF, validarCPF, validarDataNascimento } from '../utils/validacoes';
 
 export const ClienteForm = ({ onClienteAdicionado }) => {
     const [cliente, setCliente] = useState({
@@ -17,7 +17,6 @@ export const ClienteForm = ({ onClienteAdicionado }) => {
         let novoValor = value;
 
         if (name === "cpf") novoValor = formatarCPF(value);
-        if (name === "nome" || name === "endereco") novoValor = sanitizarTexto(value);
 
         setCliente({ ...cliente, [name]: novoValor });
     };
@@ -26,14 +25,12 @@ export const ClienteForm = ({ onClienteAdicionado }) => {
         e.preventDefault();
         setErro('');
 
-        // Validação da Data de Nascimento
         const erroData = validarDataNascimento(cliente.dataNascimento);
         if (erroData) {
             setErro(erroData);
             return;
         }
 
-        // Validação do CPF
         if (!validarCPF(cliente.cpf)) {
             setErro("CPF inválido.");
             return;
@@ -44,7 +41,7 @@ export const ClienteForm = ({ onClienteAdicionado }) => {
             await createCliente(clienteParaEnviar);
             setCliente({ nome: '', cpf: '', dataNascimento: '', endereco: '' });
             if (onClienteAdicionado) onClienteAdicionado();
-            setMostrarModalSucesso(true); // ✅ Exibe modal de sucesso
+            setMostrarModalSucesso(true);
         } catch (error) {
             setErro(error.response?.data || 'Erro ao cadastrar cliente');
         }
@@ -87,8 +84,8 @@ export const ClienteForm = ({ onClienteAdicionado }) => {
                     name="dataNascimento"
                     value={cliente.dataNascimento}
                     onChange={handleChange}
-                    max={new Date().toISOString().split("T")[0]} // Define o limite máximo como hoje
-                    min={new Date(new Date().setFullYear(new Date().getFullYear() - 150)).toISOString().split("T")[0]} // Define o mínimo como 150 anos atrás
+                    max={new Date().toISOString().split("T")[0]}
+                    min={new Date(new Date().setFullYear(new Date().getFullYear() - 150)).toISOString().split("T")[0]}
                     required
                 />
             </div>

@@ -11,15 +11,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
-@CrossOrigin(origins = "http://localhost:5173") // Permite requisições do frontend
+@CrossOrigin(origins = "http://localhost:5173")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
 
+    //EndPoints da API
+
     @GetMapping
     public ResponseEntity<List<Cliente>> listarClientes() {
-        System.out.println("Endpoint /clientes chamado"); // Adicione este log
+        System.out.println("Endpoint /clientes chamado");
         List<Cliente> clientes = clienteService.listarTodos();
         return ResponseEntity.ok(clientes);
     }

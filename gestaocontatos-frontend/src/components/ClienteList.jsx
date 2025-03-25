@@ -20,7 +20,7 @@ export const ClienteList = () => {
         try {
             const data = await getClientes();
             setClientes(data);
-            setClientesFiltrados(data); // Inicialmente, todos os clientes são exibidos
+            setClientesFiltrados(data);
             setError(null);
         } catch (err) {
             setError('Erro ao carregar clientes. Verifique o servidor.');
@@ -30,10 +30,8 @@ export const ClienteList = () => {
         }
     };
 
-    // Função para remover pontos e traços do CPF
     const limparCPF = (cpf) => cpf.replace(/\D/g, '');
 
-    // Função para filtrar os clientes conforme a busca
     const handleBusca = (e) => {
         const termo = e.target.value.toLowerCase().trim();
         setTermoBusca(termo);
@@ -43,7 +41,7 @@ export const ClienteList = () => {
         } else {
             const filtrados = clientes.filter((cliente) =>
                 cliente.nome.toLowerCase().includes(termo) ||
-                limparCPF(cliente.cpf).includes(termo) // Busca CPF sem pontuação
+                limparCPF(cliente.cpf).includes(termo)
             );
             setClientesFiltrados(filtrados);
         }
@@ -74,7 +72,7 @@ export const ClienteList = () => {
                                 <div key={cliente.id} className="cliente-item">
                                     <div className="cliente-detalhes">
                                         <h3>{cliente.nome}</h3>
-                                        <p><strong>CPF:</strong> {formatarCPF(cliente.cpf)}</p> {/* ✅ Formatando o CPF */}
+                                        <p><strong>CPF:</strong> {formatarCPF(cliente.cpf)}</p>
                                         <p><strong>Nascimento:</strong> {new Date(cliente.dataNascimento).toLocaleDateString()}</p>
                                         <p><strong>Endereço:</strong> {cliente.endereco}</p>
                                     </div>

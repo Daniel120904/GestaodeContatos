@@ -63,7 +63,7 @@ button[type="submit"] {
   }
 }
 
-/* Estilos para a lista de clientes */
+/*estilos para a lista de clientes */
 .clientes-container {
   padding: 20px;
   background: #fff;
@@ -112,6 +112,7 @@ button[type="submit"] {
   margin: 10px 0;
 }
 
+/*estilos para o formulario*/
 .formulario-cliente {
   background: #fff;
   padding: 20px;
@@ -157,6 +158,7 @@ button[type="submit"]:hover {
   margin-bottom: 10px;
 }
 
+/*estilos para a edição do cliente*/
 .editar-cliente {
   max-width: 800px;
   margin: 20px auto;

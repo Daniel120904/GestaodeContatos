@@ -1,20 +1,16 @@
 package com.project.gestaocontatos.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.http.converter.json.GsonBuilderUtils;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor // Gera um construtor sem argumentos
-@AllArgsConstructor // Gera um construtor com todos os argumentos
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Cliente {
     @Id
@@ -39,12 +35,7 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Contato> contatos = new ArrayList<>();
 
-
-    public void adicionarContato(Contato contato) {
-        contato.setCliente(this); // Associa o contato ao cliente
-        contatos.add(contato);
-    }
-
+    //gets e sets
     public Long getId() {
         return id;
     }
