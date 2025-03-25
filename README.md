@@ -25,7 +25,8 @@ gestaocontatos-frontend/
 │   ├── index.css                 # Estilos globais do projeto
 │   ├── index.html                # Estrutura HTML da aplicação
 │
-src/main/java/com/exemplo/gestaocontatos/
+gestaocontatos-backend/
+│── src/main/java/com/exemplo/gestaocontatos/
 │   ├── controller/                # Endpoints da API
 │   ├── model/                     # Representação das entidades do banco de dados
 │   │   ├── Cliente.java           # Atributos do cliente
@@ -36,7 +37,10 @@ src/main/java/com/exemplo/gestaocontatos/
 │   │   ├── ClienteService.java     # Métodos para gerenciar clientes
 │   ├── GestaoContatosApplication.java # Classe principal do Spring Boot
 │
+├── script.sql                     # Script para criação e população do banco de dados
 ├── README.md                       # Documentação do projeto
+├── checklist.txt                    # Lista de funcionalidades implementadas
+
 
 
 
