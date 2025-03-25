@@ -10,9 +10,9 @@ Tecnologias Utilizadas:
 
 Estrutura do Projeto
 
-gestaocontatos-frontend/src
-components
-ClienteForm.jsx: Contém os metodos e interface do formulario do cliente
+-gestaocontatos-frontend/src
+--components
+---ClienteForm.jsx: Contém os metodos e interface do formulario do cliente
     ClienteList.jsx: Contém os metodos e interface do da listagem de todos os clientes
     ContatoForm.jsx: Contém a interface do formulario do contato
     EditarCliente.jsx: Contém os metodos e interface do formulario para editar o cliente e contatos
