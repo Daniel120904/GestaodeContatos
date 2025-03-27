@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getClienteById, updateCliente, deleteCliente } from '../services/api';
-import ContatoForm from './ContatoForm'; // Importando o novo componente
+import ContatoForm from './ContatoForm';
 import { formatarCPF, removerMascaraCPF, validarCPF, validarDataNascimento } from '../utils/validacoes';
 
 export default function EditarCliente() {
