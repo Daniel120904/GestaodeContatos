@@ -7,7 +7,6 @@ export const api = axios.create({
     headers: { 'Content-Type': 'application/json' },
 });
 
-//métodos para Clientes
 export const getClientes = async () => {
     try {
         const response = await api.get('/clientes');
